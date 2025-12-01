@@ -7,6 +7,7 @@
 
 #include "Doctor.h"
 #include <iostream>
+#include <limits>
 using namespace std;
 
 // Constructors
@@ -59,13 +60,40 @@ void Doctor::set_lastName(string a) {
 
 void Doctor::set_id(long int a) {
 
-    while (a == 0 || a < 10000000 || a > 99999999) {
+    string input;
+
+    while (true) {
+    	input = to_string(a);
+
+        bool number = !input.empty();
+        for (char c : input) {
+            if (!isdigit(c)) {
+                number = false;
+                break;
+            }
+        }
+
+        if (number && input.size() == 8 && input != "0") {
+            id = a;
+            return;
+        }
 
         cout << endl << "Invalid ID. Please enter a positive 8-digit integer: ";
-        cin >> a;
+        if(!(cin >> input)){
+                	cin.clear();
+                	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                	a = -1;
+                	continue;
+                }
+
+        try {
+            a = stol(input);
+        } catch (...) {
+            a = -1;
+        }
+
     }
 
-    id = a;
 }
 
 void Doctor::set_specialty(string a) {
