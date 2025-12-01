@@ -66,24 +66,80 @@ void Patient::set_lastName(string a) {
 
 void Patient::set_id(long int a) {
 
-    while (a == 0 || a < 10000000 || a > 99999999) {
+    string input;
+
+    while (true) {
+    	input = to_string(a);
+
+        bool number = !input.empty();
+        for (char c : input) {
+            if (!isdigit(c)) {
+                number = false;
+                break;
+            }
+        }
+
+        if (number && input.size() == 8 && input != "0") {
+            id = a;
+            return;
+        }
 
         cout << endl << "Invalid ID. Please enter a positive 8-digit integer: ";
-        cin >> a;
-    }
+        if(!(cin >> input)){
+        	cin.clear();
+        	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        	a = -1;
+        	continue;
+        }
 
-	id = a;
+        try {
+            a = stol(input);
+        } catch (...) {
+            a = -1;
+        }
+    }
 }
 
 void Patient::set_doctor(long int a) {
 
-	while (a != -1 && (a < 10000000 || a > 99999999)) {
+    string input;
 
-		cout << endl << "Invalid ID. Please enter a positive 8-digit integer or -1 if not doctor is assigned: ";
-	    cin >> a;
-	}
+    while (true) {
+    	input = to_string(a);
 
-    doctor = a;
+        if (input == "-1") {
+            doctor = -1;
+            return;
+        }
+
+        bool number = !input.empty();
+        for (char c : input) {
+            if (!isdigit(c)) {
+                number = false;
+                break;
+            }
+        }
+
+        if (number && input.size() == 8 && input != "0") {
+            doctor = a;
+            return;
+        }
+
+        cout << endl << "Invalid ID. Please enter an 8-digit ID or -1 if no doctor is assigned yet: ";
+        if(!(cin >> input)){
+                	cin.clear();
+                	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                	a = -1;
+                	continue;
+                }
+
+        try {
+            a = stol(input);
+        } catch (...) {
+            a = -1;
+        }
+    }
+
 }
 
 void Patient::set_birthday(string a) {
