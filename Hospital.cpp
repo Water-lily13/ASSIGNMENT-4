@@ -184,66 +184,209 @@ void Hospital::Doctors_By_Specialty(string specialty) {
 
 
 void Hospital::Show_Patient_by_ID(long int patientID) {
-    for (size_t i = 0; i < ptrPatients->size(); i++) {
-        if ((*ptrPatients)[i].get_id() == patientID) {
-            (*ptrPatients)[i].Print_Patient_Info();
+
+    string input;
+
+    while (true) {
+
+    	input = to_string(patientID);
+
+        bool number = true;
+        for (char c : input) {
+            if (!isdigit(c)) {
+                number = false;
+                break;
+            }
+        }
+
+        if (number && input.size() == 8 && patientID != 0) {
+
+            for (size_t i = 0; i < ptrPatients->size(); i++) {
+                if ((*ptrPatients)[i].get_id() == patientID) {
+                    (*ptrPatients)[i].Print_Patient_Info();
+                    return;
+                }
+            }
+
+            cout << "No patient has the provided ID.";
             return;
         }
-    }
-    cout << "No patient has the provided ID.";
 
+        cout << endl << "Invalid ID. Please enter a positive 8-digit integer: ";
+        if(!(cin >> input)){
+                	cin.clear();
+                	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                	patientID = -1;
+                	continue;
+                }
+
+        try {
+            patientID = stol(input);
+        } catch (...) {
+            patientID = -1;
+        }
+    }
 }
 
 
 void Hospital::Show_Doctor_by_ID(long int doctorID) {
-    for (size_t i = 0; i < ptrDoctors->size(); i++) {
-        if ((*ptrDoctors)[i].get_id() == doctorID) {
-            (*ptrDoctors)[i].Print_Doctor_Info();
-            return;
-        }
-    }
-    cout << "No doctor has the provided ID.";
-}
 
-void Hospital::Show_Assigned_Doctor(long int patientID) {
-    for (size_t i = 0; i < ptrPatients->size(); i++) {
-        if ((*ptrPatients)[i].get_id() == patientID) {
-            long int doctorID = (*ptrPatients)[i].get_doctor();
-            if (doctorID == -1){
-            	cout << "No doctor assigned.";
-            	return;
+    string input;
+
+    while (true) {
+
+    	input = to_string(doctorID);
+
+        bool number = true;
+        for (char c : input) {
+            if (!isdigit(c)) {
+                number = false;
+                break;
             }
-            for (size_t j = 0; j < ptrDoctors->size(); j++) {
-                if ((*ptrDoctors)[j].get_id() == doctorID) {
-                    cout << (*ptrDoctors)[j].get_firstName() + " " + (*ptrDoctors)[j].get_lastName();
-                return;
+        }
+
+        if (number && input.size() == 8 && doctorID != 0) {
+
+            for (size_t i = 0; i < ptrDoctors->size(); i++) {
+                if ((*ptrDoctors)[i].get_id() == doctorID) {
+                    (*ptrDoctors)[i].Print_Doctor_Info();
+                    return;
                 }
             }
 
-            cout << "No doctor associated to this ID.";
+            cout << "No doctor has the provided ID.";
+            return;
+        }
+
+        cout << endl << "Invalid ID. Please enter a positive 8-digit integer: ";
+        if(!(cin >> input)){
+                	cin.clear();
+                	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                	doctorID = -1;
+                	continue;
+                }
+
+        try {
+            doctorID = stol(input);
+        } catch (...) {
+            doctorID = -1;
         }
     }
+}
 
-    cout << "No patient associated to this ID.";
+void Hospital::Show_Assigned_Doctor(long int patientID) {
+
+    string input;
+
+    while (true) {
+
+    	input = to_string(patientID);
+
+        bool number = true;
+        for (char c : input) {
+            if (!isdigit(c)) {
+                number = false;
+                break;
+            }
+        }
+
+        if (number && input.size() == 8 && patientID != 0) {
+
+            for (size_t i = 0; i < ptrPatients->size(); i++) {
+
+                if ((*ptrPatients)[i].get_id() == patientID) {
+
+                    long int doctorID = (*ptrPatients)[i].get_doctor();
+                    if (doctorID == -1) {
+                        cout << "No doctor assigned.";
+                        return;
+                    }
+
+                    for (size_t j = 0; j < ptrDoctors->size(); j++) {
+                        if ((*ptrDoctors)[j].get_id() == doctorID) {
+                            cout << (*ptrDoctors)[j].get_firstName() << " "
+                                 << (*ptrDoctors)[j].get_lastName();
+                            return;
+                        }
+                    }
+
+                    cout << "No doctor associated to this ID.";
+                    return;
+                }
+            }
+
+            cout << "No patient associated to this ID.";
+            return;
+        }
+
+        cout << endl << "Invalid ID. Please enter a positive 8-digit integer: ";
+        if(!(cin >> input)){
+                	cin.clear();
+                	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                	patientID = -1;
+                	continue;
+                }
+
+        try {
+            patientID = stol(input);
+        } catch (...) {
+            patientID = -1;
+        }
+    }
 }
 
 
 void Hospital::Show_Assigned_Patients(long int doctorID) {
-	bool found = false;
-    for (size_t i = 0; i < ptrPatients->size(); i++) {
-        if ((*ptrPatients)[i].get_doctor() == doctorID) {
-            cout << (*ptrPatients)[i].get_firstName() << " " << (*ptrPatients)[i].get_lastName() << endl;
 
-            found = true;
+    string input;
+
+    while (true) {
+
+    	input = to_string(doctorID);
+
+        bool number = true;
+        for (char c : input) {
+            if (!isdigit(c)) {
+                number = false;
+                break;
+            }
         }
 
+        if (number && input.size() == 8 && doctorID != 0) {
+
+            bool found = false;
+
+            for (size_t i = 0; i < ptrPatients->size(); i++) {
+                if ((*ptrPatients)[i].get_doctor() == doctorID) {
+                    cout << (*ptrPatients)[i].get_firstName() << " "
+                         << (*ptrPatients)[i].get_lastName() << endl;
+                    found = true;
+                }
+            }
+
+            if (!found)
+                cout << "No patients assigned.";
+
+            return;
+        }
+
+        cout << endl << "Invalid ID. Please enter a positive 8-digit integer: ";
+        if(!(cin >> input)){
+                	cin.clear();
+                	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                	doctorID = -1;
+                	continue;
+                }
+
+        try {
+
+            doctorID = stol(input);
+
+        } catch (...) {
+
+            doctorID = -1;
+        }
     }
-
-    if (!found) {
-
-    	cout << "No patients assigned.";
-    }
-
 }
 
 
